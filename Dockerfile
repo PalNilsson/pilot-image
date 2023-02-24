@@ -1,9 +1,20 @@
 FROM centos:7
 
+# Build arguments
 # Tags for rucio and pilot versions (add --build-arg RUCIO_VERSION=1.30.5 --build-arg PILOT_VERSION=3.4.8.5 (e.g.) to docker build command)
 ARG RUCIO_VERSION
 # NOTE: the pilot is currently not pip installed - the source is assumed to exists in the build area
 ARG PILOT_VERSION
+
+# User environment variables to run the pilot
+ENV PILOT_WORKFLOW stager
+ENV PILOT_JOB_LABEL user
+ENV PILOT_QUEUE GOOGLE_DASK
+ENV PILOT_USER atlas
+ENV PILOT_PANDA_SERVER https://pandaserver.cern.ch
+ENV PILOT_LIFETIME 200
+ENV X509_CERT_DIR /
+ENV X509_USER_PROXY /
 
 MAINTAINER Paul Nilsson
 
