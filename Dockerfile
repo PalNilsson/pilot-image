@@ -56,7 +56,7 @@ COPY --chown=dask:zp pilot3/ /usr/local/lib/python3.6/site-packages/pilot3/.
 #RUN mkdir /opt/pilot
 
 USER dask
-WORKDIR /home/dask
+WORKDIR /mnt/dask
 
 # Add the configuration template and enable bash completion for the rucio clients
 #ADD --chown=user:user rucio.cfg.j2 /opt/user/rucio.cfg.j2
