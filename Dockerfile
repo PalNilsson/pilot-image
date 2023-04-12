@@ -46,18 +46,18 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
 
 # Add a separate user and change ownership of config dir to that user
-RUN groupadd -g 1000 zp && \
-    useradd -ms /bin/bash -u 1000 -g 1000 dask && \
+RUN groupadd -g 1000 atlpan && \
+    useradd -ms /bin/bash -u 1000 -g 1000 atlpan && \
     mkdir -p /opt/rucio/etc/ && \
-    chown -R dask:zp /opt/rucio/etc/ && \
+    chown -R atlpan.atlpan /opt/rucio/etc/ && \
     mkdir -p /opt/user && \
-    chown dask:zp /opt/user
+    chown atlpan.atlpan /opt/user
 
 # copy the pilot source
-COPY --chown=dask:zp pilot3/ /usr/local/lib/python3.6/site-packages/pilot3/.
+COPY --chown=atlpan.atlpan pilot3/ /usr/local/lib/python3.6/site-packages/pilot3/.
 #RUN mkdir /opt/pilot
 
-USER dask
+USER atlpan
 WORKDIR /mnt/dask
 
 # Add the configuration template and enable bash completion for the rucio clients
