@@ -46,15 +46,15 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
 
 # Add a separate user and change ownership of config dir to that user
-RUN groupadd -g 1000 atlpan && \
+RUN groupadd -g 1000 zp && \
     useradd -ms /bin/bash -u 1000 -g 1000 atlpan && \
     mkdir -p /opt/rucio/etc/ && \
-    chown -R atlpan.atlpan /opt/rucio/etc/ && \
+    chown -R atlpan.zp /opt/rucio/etc/ && \
     mkdir -p /opt/user && \
-    chown atlpan.atlpan /opt/user
+    chown atlpan.zp /opt/user
 
 # copy the pilot source
-COPY --chown=atlpan.atlpan pilot3/ /usr/local/lib/python3.6/site-packages/pilot3/.
+COPY --chown=atlpan:zp pilot3/ /usr/local/lib/python3.6/site-packages/pilot3/.
 #RUN mkdir /opt/pilot
 
 USER atlpan
