@@ -15,5 +15,5 @@ date
 export PYTHONPATH=/usr/local/lib/python3.6/site-packages/rucio:/usr/local/lib/python3.6/site-packages/pilot3
 env
 echo "Executing pilot"
-python3 /usr/local/lib/python3.6/site-packages/pilot3/pilot.py --noproxyverification -d -w $PILOT_WORKFLOW -j $PILOT_JOB_LABEL -q $PILOT_QUEUE --workdir $PILOT_WORKDIR --pilot-user $PILOT_USER --url $PILOT_PANDA_SERVER --lifetime $PILOT_LIFETIME
+python3 /usr/local/lib/python3.6/site-packages/pilot3/pilot.py --noproxyverification --pod -d -w $PILOT_WORKFLOW -j $PILOT_JOB_LABEL -q $PILOT_QUEUE --workdir $PILOT_WORKDIR --pilot-user $PILOT_USER --url $PILOT_PANDA_SERVER --lifetime $PILOT_LIFETIME
 echo "Finished PanDA pilot wrapper"
