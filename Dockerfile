@@ -47,8 +47,8 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
 
 # Add a separate user and change ownership of config dir to that user
-RUN groupadd -g 1000 zp && \
-    useradd -ms /bin/bash -u 1000 -g 1000 atlpan && \
+RUN groupadd -g 1007 zp && \
+    useradd -ms /bin/bash -u 1006 -g 1007 atlpan && \
     mkdir -p /opt/rucio/etc/ && \
     chown -R atlpan.zp /opt/rucio/etc/ && \
     mkdir -p /opt/user && \
