@@ -48,7 +48,8 @@ COPY execute.sh /usr/bin/execute.sh
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools && \
     python3 -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-    python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml
+    python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+    python3 -m pip install "dask[complete]"
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
