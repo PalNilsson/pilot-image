@@ -54,6 +54,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
+RUN rm -f /usr/bin/python
 
 # Add a separate user and change ownership of config dir to that user
 RUN groupadd -g 1007 zp && \
