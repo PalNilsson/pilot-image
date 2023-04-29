@@ -59,6 +59,7 @@ RUN python -m pip install --no-cache-dir --upgrade pip && \
     python -m pip install --no-cache-dir --upgrade setuptools && \
     python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
     python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+    python -m pip install numpy && \
     python -m pip install "dask[complete]" && \
     python -m pip install "dask[array]" --upgrade
 
