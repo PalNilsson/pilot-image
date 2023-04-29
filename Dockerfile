@@ -22,7 +22,7 @@ ENV RUCIO_ACCOUNT pilot
 ENV RUCIO_AUTH_TYPE x509_proxy
 ENV RUCIO_LOCAL_SITE_ID GOOGLE-EU_SCRATCHDISK
 #ENV RUCIO_HOME /
-#ENV RUCIO_PYTHONBIN python3
+ENV RUCIO_PYTHONBIN python3
 #ENV RUCIO_PYTHONBINPATH /
 
 MAINTAINER Paul Nilsson
@@ -45,7 +45,7 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools && \
     python3 -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-    python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml requests dogpile
+    python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml requests
 
 RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel
 RUN wget https://www.python.org/ftp/python/3.9.14/Python-3.9.14.tgz
@@ -67,7 +67,6 @@ COPY execute.sh /usr/bin/execute.sh
 #    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
 RUN python -m pip install "dask[complete]"
 RUN python -m pip install requests
-RUN python -m pip install dogpile
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
