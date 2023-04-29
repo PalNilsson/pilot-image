@@ -49,6 +49,8 @@ RUN Python-3.9.14/configure
 RUN make install
 RUN rm /usr/bin/python
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
+RUN rm /usr/bin/python3
+RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3
 
 COPY execute.sh /usr/bin/execute.sh
 
@@ -73,7 +75,7 @@ RUN groupadd -g 1007 zp && \
     chown atlpan.zp /opt/user
 
 # copy the pilot source
-COPY --chown=atlpan:zp pilot3/ /usr/local/lib/python3.6/site-packages/pilot3/.
+COPY --chown=atlpan:zp pilot3/ /usr/local/lib/python3.9/site-packages/pilot3/.
 #RUN mkdir /opt/pilot
 
 USER atlpan
