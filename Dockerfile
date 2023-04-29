@@ -46,7 +46,7 @@ RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-deve
 RUN wget https://www.python.org/ftp/python/3.9.14/Python-3.9.14.tgz
 RUN tar xvfz Python-3.9.14.tgz
 RUN Python-3.9.14/configure
-RUN make install -f Python-3.9.14/Makefile
+RUN make install
 RUN rm /usr/bin/python
 RUN rm /usr/bin/python3
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
