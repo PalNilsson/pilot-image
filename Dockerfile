@@ -48,7 +48,6 @@ RUN tar xvfz Python-3.9.14.tgz
 RUN Python-3.9.14/configure
 RUN make install
 RUN rm /usr/bin/python
-RUN rm /usr/bin/python3
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
 
 COPY execute.sh /usr/bin/execute.sh
