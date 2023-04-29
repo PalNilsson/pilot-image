@@ -42,20 +42,32 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
     yum clean all && \
     rm -rf /var/cache/yum
 
+RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel
+RUN cd /tmp
+RUN wget https://www.python.org/ftp/python/3.9.14/Python-3.9.14.tgz
+RUN tar xvfz Python-3.9.14.tgz
+RUN cd Python-3.9.14
+RUN ./configure
+RUN make install
+RUN rm /usr/bin/python
+RUN rm /usr/bin/python3
+RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN cd ../..
+
 COPY execute.sh /usr/bin/execute.sh
 
 # Upgrade pip & setuptools and install Rucio
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir --upgrade setuptools && \
-    python3 -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-    python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
-    python3 -m pip install "dask[complete]"
-#    python3 -m pip install dask distributed --upgrade
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    python -m pip install --no-cache-dir --upgrade setuptools && \
+    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
+    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+    python -m pip install "dask[complete]"
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
-RUN rm -f /usr/bin/python
-RUN ln -s /usr/bin/python3 /usr/bin/python
+#RUN rm -f /usr/bin/python
+#RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # Add a separate user and change ownership of config dir to that user
 RUN groupadd -g 1007 zp && \
