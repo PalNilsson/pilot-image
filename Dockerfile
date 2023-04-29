@@ -42,10 +42,10 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
     yum clean all && \
     rm -rf /var/cache/yum
 
-RUN python -m pip install --no-cache-dir --upgrade pip && \
-    python -m pip install --no-cache-dir --upgrade setuptools && \
-    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir --upgrade setuptools && \
+    python3 -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
+    python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
 
 RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel
 RUN wget https://www.python.org/ftp/python/3.9.14/Python-3.9.14.tgz
