@@ -42,6 +42,11 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
     yum clean all && \
     rm -rf /var/cache/yum
 
+RUN python -m pip install --no-cache-dir --upgrade pip && \
+    python -m pip install --no-cache-dir --upgrade setuptools && \
+    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
+    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+
 RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel
 RUN wget https://www.python.org/ftp/python/3.9.14/Python-3.9.14.tgz
 RUN tar xvfz Python-3.9.14.tgz
@@ -55,13 +60,12 @@ RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3
 COPY execute.sh /usr/bin/execute.sh
 
 # Upgrade pip & setuptools and install Rucio
-RUN python -m pip install --no-cache-dir --upgrade pip && \
-    python -m pip install --no-cache-dir --upgrade setuptools && \
-    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
-    python -m pip install numpy && \
-    python -m pip install "dask[complete]" && \
-    python -m pip install "dask[array]" --upgrade
+#RUN python -m pip install --no-cache-dir --upgrade pip && \
+#    python -m pip install --no-cache-dir --upgrade setuptools && \
+#    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
+#    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+RUN python -m pip install numpy && \
+    python -m pip install "dask[complete]" \
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
