@@ -67,6 +67,8 @@ COPY execute.sh /usr/bin/execute.sh
 #    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
 #    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
 RUN python -m pip install "dask[complete]"
+RUN python -m pip "dask[distributed]" --upgrade
+RUN python -m pip "dask-ml[complete]"
 RUN python -m pip install requests
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
