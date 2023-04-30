@@ -44,6 +44,7 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools && \
+    python3 -m pip install --no-cache-dir dogpile==1.1.5 && \
     python3 -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
     python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml requests
 
