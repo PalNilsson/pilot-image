@@ -14,7 +14,7 @@ ENV PILOT_USER atlas
 ENV PILOT_PANDA_SERVER https://pandaserver.cern.ch
 ENV PILOT_LIFETIME 200
 ENV PILOT_WORKDIR /
-ENV PILOT_SOURCE_DIR /usr/local/lib/python3.6/site-packages/pilot3
+ENV PILOT_SOURCE_DIR /usr/local/lib/python3.9/site-packages/pilot3
 ENV HARVESTER_PILOT_CONFIG /
 ENV X509_CERT_DIR /
 ENV X509_USER_PROXY /
