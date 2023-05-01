@@ -60,6 +60,7 @@ RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3
 RUN mkdir /usr/local/lib/python3.9/site-packages/rucio
 RUN cp -r /usr/local/lib/python3.6/site-packages/rucio /usr/local/lib/python3.9/site-packages/rucio/.
 RUN cp -r /usr/local/lib/python3.6/site-packages/dogpile /usr/local/lib/python3.9/site-packages/.
+
 COPY execute.sh /usr/bin/execute.sh
 
 # Upgrade pip & setuptools and install Rucio
