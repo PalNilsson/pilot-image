@@ -44,14 +44,14 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools && \
-    python3 -m pip install --no-cache-dir dogpile.cache==1.1.5 && \
+ #   python3 -m pip install --no-cache-dir dogpile.cache==1.1.5 && \
     python3 -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
     python3 -m pip install --no-cache-dir jinja2 j2cli pyyaml requests
 
 RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel
-RUN wget https://www.python.org/ftp/python/3.9.14/Python-3.9.14.tgz
-RUN tar xvfz Python-3.9.14.tgz
-RUN Python-3.9.14/configure
+RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz
+RUN tar xvfz Python-3.9.16.tgz
+RUN Python-3.9.16/configure --enable-optimizations
 RUN make install
 RUN rm /usr/bin/python
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
@@ -59,7 +59,7 @@ RUN rm /usr/bin/python3
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3
 RUN mkdir /usr/local/lib/python3.9/site-packages/rucio
 RUN cp -r /usr/local/lib/python3.6/site-packages/rucio /usr/local/lib/python3.9/site-packages/rucio/.
-RUN cp -r /usr/local/lib/python3.6/site-packages/dogpile /usr/local/lib/python3.9/site-packages/.
+#RUN cp -r /usr/local/lib/python3.6/site-packages/dogpile /usr/local/lib/python3.9/site-packages/.
 
 COPY execute.sh /usr/bin/execute.sh
 
@@ -68,6 +68,7 @@ COPY execute.sh /usr/bin/execute.sh
 #    python -m pip install --no-cache-dir --upgrade setuptools && \
 #    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
 #    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
+RUN python -m pip install --no-cache-dir dogpile.cache==1.1.5
 RUN python -m pip install "dask[complete]"
 RUN python -m pip install "dask[distributed]" --upgrade
 RUN python -m pip install "dask-ml[complete]"
