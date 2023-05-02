@@ -76,7 +76,7 @@ COPY execute.sh /usr/bin/execute.sh
 RUN python -m pip install --no-cache-dir "dask[complete]"
 RUN python -m pip install --no-cache-dir "dask[distributed]" --upgrade
 RUN python -m pip install --no-cache-dir "dask-ml[complete]"
-#RUN python -m pip install --no-cache-dir requests
+RUN python -m pip install --no-cache-dir torch
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
