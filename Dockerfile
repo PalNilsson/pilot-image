@@ -33,6 +33,8 @@ RUN yum install -y epel-release.noarch && \
 RUN yum upgrade -y && \
     yum clean all && \
     rm -rf /var/cache/yum
+
+# install packages under Python 3.6
 RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
     yum install -y python36u-pip voms-clients-java gfal2-all gfal2-util python3-gfal2 xrootd-client \
                    unzip which \
@@ -45,6 +47,7 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools
 
+# build and install Python 3.9
 RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel
 RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz
 RUN tar xvfz Python-3.9.16.tgz
@@ -56,27 +59,16 @@ RUN rm /usr/bin/python
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
 RUN rm /usr/bin/python3
 RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3
+
+# install rucio-client and copy Python 3.6 libraries to 3.9
 RUN python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
     python -m pip install --no-cache-dir jinja2 j2cli pyyaml requests
 RUN mkdir /usr/lib64/python3.9
 RUN ln -s /usr/lib64/python3.6/site-packages /usr/lib64/python3.9/site-packages
 
-#RUN mkdir /usr/local/lib/python3.9/site-packages/rucio
-#RUN cp -r /usr/local/lib/python3.6/site-packages/rucio /usr/local/lib/python3.9/site-packages/rucio/.
-#RUN cp -r /usr/local/lib/python3.6/site-packages/dogpile /usr/local/lib/python3.9/site-packages/.
-
 COPY execute.sh /usr/bin/execute.sh
 
-# Upgrade pip & setuptools and install Rucio
-#RUN python -m pip install --no-cache-dir --upgrade pip && \
-#    python -m pip install --no-cache-dir --upgrade setuptools && \
-#    python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-#    python -m pip install --no-cache-dir jinja2 j2cli pyyaml && \
-#RUN python -m pip install --no-cache-dir dogpile.cache==1.1.5
 RUN python -m pip install --no-cache-dir "dask[complete]"
-RUN python -m pip install --no-cache-dir "dask[distributed]" --upgrade
-RUN python -m pip install --no-cache-dir "dask-ml[complete]"
-RUN python -m pip install --no-cache-dir torch
 
 #RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
 #RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
