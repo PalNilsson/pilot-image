@@ -6,6 +6,9 @@ ARG RUCIO_VERSION
 # NOTE: the pilot is currently not pip installed - the source is assumed to exists in the build area
 ARG PILOT_VERSION
 
+# Tag for selecting the dask version
+ARG DASK_VERSION
+
 # Tag for selecting a package to be pip installed (e.g. dask-ml[complete])
 ARG PACKAGE
 
@@ -72,7 +75,7 @@ RUN ln -s /usr/lib64/python3.6/site-packages /usr/lib64/python3.9/site-packages
 COPY execute.sh /usr/bin/execute.sh
 
 # install dask
-RUN python -m pip install --no-cache-dir "dask[complete]"
+RUN python -m pip install --no-cache-dir "dask[complete]==$DASK_VERSION"
 
 # install optional package
 RUN if [[ -z "$PACKAGE" ]] ; then echo No additional package ; else python -m pip install --no-cache-dir $PACKAGE ; fi
