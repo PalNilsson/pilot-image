@@ -76,6 +76,8 @@ COPY execute.sh /usr/bin/execute.sh
 
 # install dask
 RUN python -m pip install --no-cache-dir "dask[complete]==$DASK_VERSION"
+RUN python -m pip install --no-cache-dir dask-awkward dask-histogram
+RUN python -m pip install --no-cache-dir coffea
 
 # install optional package
 RUN if [[ -z "$PACKAGE" ]] ; then echo No additional package ; else python -m pip install --no-cache-dir $PACKAGE ; fi
