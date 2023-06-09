@@ -54,7 +54,7 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools
 
 # build and install Python 3.9
-RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel root
+RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel root uproot
 RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz
 RUN tar xvfz Python-3.9.16.tgz
 RUN rm Python-3.9.16.tgz
