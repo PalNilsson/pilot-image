@@ -15,5 +15,5 @@ date
 export PYTHONPATH=/usr/lib64/python3.9/site-packages:/usr/local/lib/python3.9/site-packages/rucio:/usr/local/lib/python3.9/site-packages/pilot3
 env
 echo "Executing pilot"
-python3 /usr/local/lib/python3.9/site-packages/pilot3/pilot.py --noproxyverification --pod -d -w $PILOT_WORKFLOW -j $PILOT_JOB_LABEL -q $PILOT_QUEUE --workdir $PILOT_WORKDIR --pilot-user $PILOT_USER --url $PILOT_PANDA_SERVER --lifetime $PILOT_LIFETIME
+python3 /usr/local/lib/python3.9/site-packages/pilot3/pilot.py --noproxyverification --pod -d -w $PILOT_WORKFLOW -j $PILOT_JOB_LABEL -q $PILOT_QUEUE --workdir $PILOT_WORKDIR --pilot-user $PILOT_USER --url $PILOT_PANDA_SERVER --lifetime $PILOT_LIFETIME --leasetime $PILOT_LEASETIME
 exit $?
