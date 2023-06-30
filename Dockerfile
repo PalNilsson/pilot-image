@@ -54,7 +54,7 @@ RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
 RUN python3 -m pip install --no-cache-dir --upgrade pip && \
     python3 -m pip install --no-cache-dir --upgrade setuptools
 
-RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel root uproot pyarrow
+RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel root uproot
 
 # build and install Python 3.9
 RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz
