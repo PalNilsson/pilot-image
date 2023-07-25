@@ -21,7 +21,7 @@ ENV PILOT_PANDA_SERVER https://pandaserver.cern.ch
 ENV PILOT_LIFETIME 86400
 ENV PILOT_LEASETIME 3600
 ENV PILOT_WORKDIR /
-ENV PILOT_SOURCE_DIR /usr/local/lib/python3.9/site-packages
+ENV PILOT_SOURCE_DIR /usr/local/lib/python3.10/site-packages
 ENV HARVESTER_PILOT_CONFIG /
 ENV X509_CERT_DIR /
 ENV X509_USER_PROXY /
@@ -56,23 +56,23 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip && \
 
 RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel root uproot pyarrow
 
-# build and install Python 3.9
-RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz
-RUN tar xvfz Python-3.9.16.tgz
-RUN rm Python-3.9.16.tgz
-RUN Python-3.9.16/configure
+# build and install Python 3.10
+RUN wget https://www.python.org/ftp/python/3.10.12/Python-3.10.12.tgz
+RUN tar xvfz Python-3.10.12.tgz
+RUN rm Python-3.10.12.tgz
+RUN Python-3.10.12/configure
 RUN make
 RUN make install
 RUN rm /usr/bin/python
-RUN ln -s /usr/local/bin/python3.9 /usr/bin/python
+RUN ln -s /usr/local/bin/python3.10 /usr/bin/python
 RUN rm /usr/bin/python3
-RUN ln -s /usr/local/bin/python3.9 /usr/bin/python3
+RUN ln -s /usr/local/bin/python3.10 /usr/bin/python3
 
-# install rucio-client and copy Python 3.6 libraries to 3.9
+# install rucio-client and copy Python 3.6 libraries to 3.10
 RUN python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
     python -m pip install --no-cache-dir jinja2 j2cli pyyaml requests
-RUN mkdir /usr/lib64/python3.9
-RUN ln -s /usr/lib64/python3.6/site-packages /usr/lib64/python3.9/site-packages
+RUN mkdir /usr/lib64/python3.10
+RUN ln -s /usr/lib64/python3.6/site-packages /usr/lib64/python3.10/site-packages
 
 COPY execute.sh /usr/bin/execute.sh
 
@@ -98,7 +98,7 @@ RUN groupadd -g 1007 zp && \
     chown atlpan.zp /opt/user
 
 # copy the pilot source
-COPY --chown=atlpan:zp pilot3/ /usr/local/lib/python3.9/site-packages/pilot3/.
+COPY --chown=atlpan:zp pilot3/ /usr/local/lib/python3.10/site-packages/pilot3/.
 #RUN mkdir /opt/pilot
 
 USER atlpan
