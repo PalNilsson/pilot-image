@@ -10,4 +10,4 @@ also sets up ROOT and the rucio-client.
 
 ### Test instruction
 
-Test image with <code>docker run image_name:latest</code>
+Test image with <code>docker run -it image_name:latest</code>
