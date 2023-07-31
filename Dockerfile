@@ -60,7 +60,7 @@ RUN yum install -y yum-utils gcc voms-clients-java gfal2-all gfal2-util python3-
                    nordugrid-arc-plugins-xrootd \
                    root python3-root python3-pip git && \
     yum clean all && \
-    rm -rf /var/cache/yum \
+    rm -rf /var/cache/yum
 
 # pip installations
 RUN pip3 install --upgrade pip
