@@ -1,39 +1,48 @@
-FROM centos:7
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Authors:
+# - Paul Nilsson, paul.nilsson@cern.ch, 2023
+#
+# Dockerfile for building a PanDA Pilot image using Dask and ROOT, based on AlmaLinux9
+# using default system Python version (3.9.16)
+# The PanDA Pilot is git installed and placed into the same folder as this Dockerfile.
+# (execute 'git clone https://github.com/PanDAWMS/pilot3.git' in this folder for the official and current version).
+#
+# Build with (e.g.):
+# docker build -t dask-pilot . --build-arg RUCIO_VERSION=1.31.5 --build-arg DASK_VERSION=2023.4.1
 
-# Build arguments
-# Tags for rucio and pilot versions (add --build-arg RUCIO_VERSION=1.30.5 --build-arg PILOT_VERSION=3.4.8.5 (e.g.) to docker build command)
+FROM almalinux/9-base
+
+# build arguments
 ARG RUCIO_VERSION
-# NOTE: the pilot is currently not pip installed - the source is assumed to exists in the build area
-ARG PILOT_VERSION
-
-# Tag for selecting the dask version
 ARG DASK_VERSION
 
-# Tag for selecting a package to be pip installed (e.g. dask-ml[complete])
-ARG PACKAGE
-
-# User environment variables to run the pilot
+# environment variables for the pilot and rucio
 ENV PILOT_WORKFLOW generic
 ENV PILOT_JOB_LABEL user
 ENV PILOT_QUEUE GOOGLE_DASK
 ENV PILOT_USER atlas
 ENV PILOT_PANDA_SERVER https://pandaserver.cern.ch
-ENV PILOT_LIFETIME 86400
-ENV PILOT_LEASETIME 3600
+ENV PILOT_LIFETIME 86500
+ENV PILOT_LEASETIME 86400
 ENV PILOT_WORKDIR /
-ENV PILOT_SOURCE_DIR /usr/local/lib/python3.10/site-packages
+ENV PILOT_SOURCE_DIR /usr/local/lib/python3.9/site-packages
 ENV HARVESTER_PILOT_CONFIG /
 ENV X509_CERT_DIR /
 ENV X509_USER_PROXY /
 ENV RUCIO_ACCOUNT pilot
 ENV RUCIO_AUTH_TYPE x509_proxy
 ENV RUCIO_LOCAL_SITE_ID GOOGLE-EU_SCRATCHDISK
-#ENV RUCIO_HOME /
-ENV RUCIO_PYTHONBIN python3
-#ENV RUCIO_PYTHONBINPATH /
+ENV RUCIO_PYTHONBIN python3.9
 
 MAINTAINER Paul Nilsson
 
+RUN mkdir /opt/app
+
+# prepare for yum installations
 RUN yum install -y epel-release.noarch && \
     yum clean all && \
     rm -rf /var/cache/yum
@@ -41,53 +50,26 @@ RUN yum upgrade -y && \
     yum clean all && \
     rm -rf /var/cache/yum
 
-# install packages under Python 3.6
-RUN yum -y install https://repo.ius.io/ius-release-el7.rpm && \
-    yum install -y python36u-pip voms-clients-java gfal2-all gfal2-util python3-gfal2 xrootd-client \
-                   unzip which \
+# prepare for rucio installation
+RUN rpm -i https://repo.almalinux.org/almalinux/9/CRB/x86_64/os/Packages/libdb-cxx-5.3.28-53.el9.x86_64.rpm
+RUN yum install -y yum-utils gcc voms-clients-java gfal2-all gfal2-util python3-gfal2 xrootd-client \
+                   openssl-devel bzip2-devel libffi-devel \
+                   nordugrid-arc-plugins-needed \
                    nordugrid-arc-client nordugrid-arc-plugins-gfal \
                    nordugrid-arc-plugins-globus nordugrid-arc-plugins-s3 \
-                   nordugrid-arc-plugins-xrootd && \
+                   nordugrid-arc-plugins-xrootd \
+                   root python3-root python3-pip git && \
     yum clean all && \
-    rm -rf /var/cache/yum
+    rm -rf /var/cache/yum \
 
-RUN python3 -m pip install --no-cache-dir --upgrade pip && \
-    python3 -m pip install --no-cache-dir --upgrade setuptools
-
-RUN yum -y install make wget yum-utils gcc openssl-devel bzip2-devel libffi-devel root uproot pyarrow
-
-# build and install Python 3.10
-RUN wget https://www.python.org/ftp/python/3.10.12/Python-3.10.12.tgz
-RUN tar xvfz Python-3.10.12.tgz
-RUN rm Python-3.10.12.tgz
-RUN Python-3.10.12/configure
-RUN make
-RUN make install
-RUN rm /usr/bin/python
-RUN ln -s /usr/local/bin/python3.10 /usr/bin/python
-RUN rm /usr/bin/python3
-RUN ln -s /usr/local/bin/python3.10 /usr/bin/python3
-
-# install rucio-client and copy Python 3.6 libraries to 3.10
-RUN python -m pip install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION && \
-    python -m pip install --no-cache-dir jinja2 j2cli pyyaml requests
-RUN mkdir /usr/lib64/python3.10
-RUN ln -s /usr/lib64/python3.6/site-packages /usr/lib64/python3.10/site-packages
-
-COPY execute.sh /usr/bin/execute.sh
+# pip installations
+RUN pip3 install --upgrade pip
+RUN pip3 install --no-cache-dir --pre rucio-clients[argcomplete]==$RUCIO_VERSION
+RUN pip3 install --no-cache-dir jinja2 j2cli pyyaml requests uproot
 
 # install dask
-RUN python -m pip install --no-cache-dir "dask[complete]==$DASK_VERSION"
-RUN python -m pip install --no-cache-dir dask-awkward dask-histogram
-RUN python -m pip install --no-cache-dir coffea
-
-# install optional package
-RUN if [[ -z "$PACKAGE" ]] ; then echo No additional package ; else python -m pip install --no-cache-dir $PACKAGE ; fi
-
-#RUN mkdir -p /usr/local/lib/python3.6/site-packages/pilot3
-#RUN python3 -m pip install --no-cache-dir panda-pilot[argcomplete]==$PILOT_VERSION
-#RUN rm -f /usr/bin/python
-#RUN ln -s /usr/bin/python3 /usr/bin/python
+RUN pip3 install --no-cache-dir "dask[complete]==$DASK_VERSION"
+RUN pip3 install --no-cache-dir dask-awkward dask-histogram coffea
 
 # Add a separate user and change ownership of config dir to that user
 RUN groupadd -g 1007 zp && \
@@ -95,18 +77,22 @@ RUN groupadd -g 1007 zp && \
     mkdir -p /opt/rucio/etc/ && \
     chown -R atlpan.zp /opt/rucio/etc/ && \
     mkdir -p /opt/user && \
-    chown atlpan.zp /opt/user
+    chown atlpan.zp /opt/user && \
+    mkdir -p /opt/panda && \
+    chown -R atlpan.zp /opt/panda
+
+# Download PanDA Pilot
+RUN git clone https://github.com/PalNilsson/pilot3.git && \
+    mv pilot3 /opt/panda && \
+    cd /opt/panda/pilot3 && \
+    git checkout next
 
 # copy the pilot source
-COPY --chown=atlpan:zp pilot3/ /usr/local/lib/python3.10/site-packages/pilot3/.
-#RUN mkdir /opt/pilot
+RUN chown atlpan:zp /opt/panda/pilot3/
+RUN cp -r /opt/panda/pilot3/ /usr/local/lib/python3.9/site-packages/.
 
 USER atlpan
 WORKDIR /mnt/dask
-
-# Add the configuration template and enable bash completion for the rucio clients
-#ADD --chown=user:user rucio.cfg.j2 /opt/user/rucio.cfg.j2
-#ADD init_rucio.sh /etc/profile.d/rucio_init.sh
 
 COPY rucio.cfg /opt/rucio/etc/rucio.cfg
 

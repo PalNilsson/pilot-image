@@ -12,10 +12,10 @@
 echo "Launching PanDA pilot wrapper for user `whoami`"
 echo "Python version: `python3 -V`"
 date
-export PYTHONPATH=/usr/lib64/python3.10/site-packages:/usr/local/lib/python3.10/site-packages/rucio:/usr/local/lib/python3.10/site-packages/pilot3
+export PYTHONVERSION python3.9
+export PYTHONPATH=/usr/lib64/$PYTHONVERSION/site-packages:/usr/local/lib/$PYTHONVERSION/site-packages/rucio:/usr/local/lib/$PYTHONVERSION/site-packages/pilot3
 env
-echo "Setting up ROOT"
 
 echo "Executing pilot"
-python3 /usr/local/lib/python3.10/site-packages/pilot3/pilot.py --noproxyverification --pod -d -w $PILOT_WORKFLOW -j $PILOT_JOB_LABEL -q $PILOT_QUEUE --workdir $PILOT_WORKDIR --pilot-user $PILOT_USER --url $PILOT_PANDA_SERVER --lifetime $PILOT_LIFETIME --leasetime $PILOT_LEASETIME
+python3 /usr/local/lib/$PYTHONVERSION/site-packages/pilot3/pilot.py --noproxyverification --pod -d -w $PILOT_WORKFLOW -j $PILOT_JOB_LABEL -q $PILOT_QUEUE --workdir $PILOT_WORKDIR --pilot-user $PILOT_USER --url $PILOT_PANDA_SERVER --lifetime $PILOT_LIFETIME --leasetime $PILOT_LEASETIME
 exit $?
