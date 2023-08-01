@@ -8,4 +8,4 @@ Files for creating a pilot image, using the AlmaLinux9 base image. The Dockerfil
 
 ### Test instruction
 
-Test image with <code>docker run image_name:latest</code>
+Test image with <code>docker run -it image_name</code>
