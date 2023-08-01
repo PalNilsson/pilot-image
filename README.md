@@ -1,11 +1,11 @@
 # pilot-image
 
-Files for creating a pilot image. The Dockerfile also sets up the rucio-client (pip installed).
+Files for creating a pilot image, using the AlmaLinux9 base image. The Dockerfile also sets up ROOT, dask and the rucio-client.
 
 ### Build instruction
 
 1. Copy the pilot source code into the build area, as the Dockerfile assumes the existance of a pilot3 directory there
-2. Build <code>docker build -t image_name . --build-arg RUCIO_VERSION=1.30.5 --build-arg DASK_VERSION=2023.6.1</code> (or other rucio/dask versions)
+2. Build <code>docker build --no-cachedir -t image_name . --build-arg RUCIO_VERSION=1.31.5 --build-arg DASK_VERSION=2023.4.1</code> (or other rucio/dask versions)
 
 ### Test instruction
 
